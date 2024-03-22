@@ -22,13 +22,14 @@ def main(device_id=0):
     with open(csv_filename, mode='w', newline='') as file:
         writer = csv.writer(file)
         # Write the header row
-        writer.writerow(["timestamp","page_specific", "beat_time", "beat_count", "heart_rate", "operating_time",
+        writer.writerow(["timestamp","device_id", "page_specific", "beat_time", "beat_count", "heart_rate", "operating_time",
                          "manufacturer_id_lsb", "serial_number", "previous_heart_beat_time", "battery_percentage"])
 
         def on_device_data(page: int, page_name: str, data):
             if isinstance(data, HeartRateData):
                 # Write the data to the CSV file
                 writer.writerow([datetime.now().strftime("%Y-%m-%d %H:%M:%S.%f")[:-3],
+                		  device_id,
                                  data.page_specific, data.beat_time, data.beat_count, data.heart_rate,
                                  data.operating_time, data.manufacturer_id_lsb, data.serial_number,
                                  data.previous_heart_beat_time, data.battery_percentage])
@@ -46,4 +47,4 @@ def main(device_id=0):
             node.stop()
 
 if __name__ == "__main__":
-    main()
+    main(device_id=40436)
